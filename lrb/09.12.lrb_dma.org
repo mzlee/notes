@@ -1,0 +1,20 @@
+
+* Trying to change the size of the DMA
+  + [FILE] lrb_file_io_commands.h
+    = [OBJECT] LRBFileIoCmd
+      + m_size
+  + [FILE] host_main.cpp
+    = D3DKMTRender
+      + DxgkDdiRender
+      + DxgkDdiSubmitCommand
+  + [FILE] DmaBufferManagerV1.cpp
+    - DxgkDdiSubmitCommand
+      
+
+* Some sort of numbers - Ignoring the submission that crossed a packet from csrss.exe
+  + Queue Packet
+    - Submission Time: 170580584
+      + DMA Packet
+        - Submitted to Hardware: 170584360
+        - GPU Start Processing:  170
+  + Completion Time: 170587207

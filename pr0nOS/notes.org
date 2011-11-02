@@ -1,0 +1,110 @@
+#-*- mode: org -*-
+#+STARTUP: showall
+
+* What is an attack model?
+** Forensic Deniability
+   The "attacker" gets access to the system in some capacity
+   (depending on strength of the attacker) and tries to determine
+   whether or not a particular "action" was taken (where action could
+   be loading a particular webpage, running an application, etc).
+
+   The attacker wins if he can distinguish between two executions with
+   one differing program.
+
+   A harder problem would be to try to make some guarantee about a
+   non-interference property.
+
+* Where does data lie around?
+  + Application Level
+    - Swapped to disk
+    - Memory Dump
+    - Temporary Files
+    - Dynamic Allocation
+  + Kernel
+    - Buffer Cache
+    - Key Cache
+    - DMA Buffers
+  + General Data Structures
+    - Circular queues
+    - I/O buffers
+    - Strings
+** GUI Programs vs. Command Line
+   There's an inherent difference due to the event loop in GUI
+   programs [Garbage].  GUI event loops sit at the top of the stack
+   and occansionally do work.  This results in a different access
+   pattern and possibly leaked information on the stack.
+** Specific Examples
+*** Mozilla 1.0 [WSS]
+    + Kernel random number generator
+    + XFree86 event queue
+    + Kernel socket Buffers
+    + Mozilla strings
+    + Kernel tty buffers
+*** Apache and Perl [WSS]
+    + Kernel packet buffers
+    + Apache input buffers
+    + Apache output buffer
+    + Kernel pipe buffer
+    + Perl file input buffer
+    + Perl string buffers
+*** Emacs [WSS]
+    + Kernel random number generator
+    + Global variable: kbd_buffer
+    + Global variable: recent_keys
+    + Lisp string in emacs
+    + Stack
+    + Three kernel buffers: a flip buffer, tty, and ipc to shell
+      subprocess
+*** Modern Browsers (Firefox 3.5) [Private Browse]
+    + cert8.db: CA Certs, client certs, and settings
+    + permissions.sqlite: site specific preferences
+    + mimeTypes.rdf: Download actions for file types
+    + SQlite databases - show an accessed timestamp
+    + search.sqlite, search.json: Search Plugins
+    + pluginreg.dat: Plugin registration
+    + Browser extensions can also leak data
+*** Databases (PostgreSQL, MySQL, IBM DB2, SQLite)
+    + Not all operations properly remove data:
+    + DELETE might not physically overwrite data
+    + UPDATE might preserve the old value
+
+* Terms from various papers
+** Data Lifetime [WSS, Garbage]
+   + Ideal Data Lifetime
+   + Secure Deallocation Data Lifetime
+   + Natural Data Lifetime
+** Forensically Transparent System [Database]
+   + "All data retained by the system should be accessible through a
+      legitimate interface and it should not be possible to recover
+      hidden data through inspection of system state." (Page 92)
+** Slack Data
+   Data that is not accessible through normal interfaces but can still
+   be recovered for whatever purposes.
+   + Database Slack
+   + File System Slack
+
+* Some (possibly relevant) papers
+** Data Lifetime is a Systems Problem
+   T. Garfinkel, et al.
+   Stanford University
+   2004 SIGOPS European Workshop
+** Understanding Data Lifetime via Whole System Simulation [WSS]
+   J. Chow, et al.
+   Stanford University
+   2004 USENIX Security Symposium
+** Shredding Your Garbage: Reducing Data Lifetime Through Secure Deallocation [Garbage]
+   J. Chow, et al.
+   Stanford University
+   2005 USENIX Security Symposium
+** Threats to Privacy in the Forensic Analysis of Database Systems [Database]
+   P. Stahlberg, et al.
+   University of Massachusetts, Amherst
+   2007 SIGMOD Internation Conference on Management of Data
+** An Analysis of Private Browsing Modes in Modern Browsers
+   G. Aggarwal, et al.
+   Stanford University, CMU
+   2010 USENIX Security Symposium
+** LeakProber: A Framework for Profiling Sensitive Data Leakage Paths
+   J. Yu, et al.
+   Pennsylvania State University, University of Science and Technology, Wuhan China
+   2011 ACM Conference on Data and Application Security and Privacy

@@ -1,0 +1,32 @@
+#+TITLE: Crypto Cost Analysis of Anonymous Authentication Schemes
+#+AUTHOR: Michael Lee
+#+EMAIL: mzlee@cs.utexas.edu
+
+* Periodic n-Times Anonymous Authentication
+** Key Generation
+*** Inputs
+    k, l_q, l_x, l_{time}, l_{cnt}, n
+**** Constraints
+     l_q \geq l_x \geq l_{time} + l_{cnt} + 2
+     2^{l_{cnt}} - 1 \gt n
+*** Outputs
+    Cyclic Group: \bb{G},  Ord(\bb{G})  = p'q', composite
+      and generators g, h
+    Cyclic Group: \cap{G}, Ord(\cap{G}) = q, prime
+      and generators g, g~, h
+
+    g, h, \bb{G}, g g~, h, \cap{G}, pk
+*** Time
+    Not a common operation, ignored for now
+*** Other
+    Define a map c:
+    Let l_y = l_x - l_{time} - l_{cnt}
+    {0,1}^{l_y} X {0,1}^{l_time} X {0,1}^{l_cnt}
+    -> {0,1}^{l_x}
+
+    Or equivalently:
+      u \in {0, 2^{l_y} - 1}
+      v \in {0, 2^{l_{time}} - 1}
+      z \in {0, 2^{l_{cnt}} - 1}
+
+    c(u, v, z) = u * 2^{l_{time} + l_{cnt}} + v * 2^{l_{cnt}} + z

@@ -1,0 +1,44 @@
+#!/bin/sh -e
+
+# Run with sudo!
+. `dirname $0`/environment
+
+snapshot=${1:-yes}
+#graphics=${2:-no}
+#cache=${3:-yes}
+
+if [ "${snapshot}" = "yes" ]; then
+    SNAP="--snapshot"
+else
+    SNAP=""
+    echo "WARNING: NOT snapshoting..."
+fi
+
+#if [ "${graphics}" = "yes" ]
+#then
+#    GRAPHICS=""
+#else
+#    GRAPHICS="-nographic"
+#fi
+
+#if [ "${cache}" = "yes" ]
+#then
+#    CACHE=""
+#else
+#    CACHE="cache=none"
+#    SNAP=""
+#fi
+
+QEMU=qemu-system-x86_64
+MEM="-m 2048"
+# SMP="-smp 2"
+# CDROM="-cdrom ubuntu-10.04.1-server-amd64.iso -boot d"
+NET_CARD="-net nic,model=virtio"
+NET_DHCP="-net user,net=10.0.0.0/8,dhcpstart=10.0.0.1"
+NET_HTTP="-redir tcp:80:10.0.0.1:80"
+NET_SSH="-redir tcp:2222:10.0.0.1:22"
+NET="${NET_CARD} ${NET_DHCP} ${NET_HTTP} ${NET_SSH}"
+
+IMAGE_FILE=${IMAGE}
+time ${QEMU} ${MEM} ${NET} ${SMP} ${CDROM} ${SNAP} ${IMAGE_FILE} 2>> startup.timing
+echo '' >> startup.timing

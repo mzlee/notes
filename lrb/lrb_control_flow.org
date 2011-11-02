@@ -1,0 +1,234 @@
+* FileUpload
+** Files:
+*** include
+    + lrb_file_io_commands.h
+      - class [[LRBFileIoCmdUploadFile]]
+    + private_data.h
+      - struct LRBWinAdapterPrvData
+      - struct LRBWinCtxPrvData
+*** CommonExt
+    + LrbHostInterface.c
+    + include/LrbHostInterface.h
+       - enum [[LRBEngine]]
+       - enum [[LRBStdApp]]
+*** WinLrbFileIoApp
+    + host_main.cpp
+      - class [[FileIOContext]]
+      - function [[main]]
+    + lrb_kmt_context.cpp/h
+      - class [[LRBKMTContext]]
+        - class [[BufferAllocation]]
+*** KMD/Include
+    + adapterlayer.h
+*** KMD/Render/DDI
+    + AdapterLayer.cpp
+      - function [[RenderDriverEntry]]
+    + CAdapter.cpp/hpp
+      - class [[CAdapter]]
+*** KMD/Render/graphics
+    + AllocationManager.cpp
+    + GfxDevice.cpp/hpp
+      - class [[GfxDevice]]
+    + GfxContext.cpp/hpp
+      - class [[GfxContext]]
+** UploadFile
+*** User Level Code
+    - [[main]]
+      + [[pCtx]] <- [[FileIOContext]]::GetContext
+        - [[pCtx]] <- new [[FileIOContext]]::FileIOContext
+        - [[pCtx]]->[[FileIOContext]]::Init( [[appTarget]] = [[LRBEngine]]::LRB_STDAPP_FILEIO )
+          + [[LRBKMTContext]]::OpenAdapter ** Obtain a D3DKMT handle to
+            the LRB adapter
+            - hAdapter <- D3DKMTOpenAdapterFromGdiDisplayName
+
+              * Kernel Jump [[OpenAdapterGdiDisplayName]]
+
+            - [[m_hAdapter]] <- D3DKMTQueryAdapterInfo( KMTQAITYPE_UMDRIVERNAME )
+
+              + Goes to a hole
+              * Kernel Jump [[QueryAdapterInfo]]
+
+          + [[LRBKMTContext]]::CreateDevice ** Create a new D3DKMT device on
+            the LRB adapter
+            - ** Check [[m_hAdapter]]
+            - [[m_hDevice]] <- D3DKMTCreateDevice( [[m_hAdapter]] )
+
+              * Kernel Jump [[CreateDevice]]
+
+          + [[LRBKMTContext]]::CreateContext( [[appTarget]] ) ** Create a new
+            D3DKMT Context on the LRB adapter
+            - ** Check [[m_hDevice]]
+            - [[m_hContext]] <- D3DKMTCreateContext( [[appTarget]] )
+
+              * Kernel Jump [[CreateContext]]
+
+            - [[m_ctxArgs]] = { [[m_hDevice]]
+                            D3DKMT_CLIENTHINT_OPENGL 
+                            [[LRBStdApp]]::LRB_ENG_APPLICATION
+                            prvData <- [[appTarget]]
+                          }
+      + [[pCtx]] -> UploadFile( [[pLocalFile]] [[pRemoteFile]] )
+        - [[ctxArgs]] <- [[m_ctxArgs]]
+        - fileBuf <- [[LRBKMTContext]]::BufferAllocation::BufferAllocation( [[m_hDevice]] fileSize )
+          + [[m_hAllocation]] <- D3DKMTCreateAllocation( [[m_hDevice]] fileSize )
+
+            * Kernel Jump [[CreateAllocation]]
+
+        - [[pCmd]] <- new LRBFileIoCmdUploadFile( [[pLocalFile]] )
+        - [[pCmd]]::SetBufferInfo( fileBuf )
+
+        - D3DKMTRender( [[pCmd]] )
+          * Kernel Jump [[Render]]
+
+        - delete BufferAllocation
+          + D3DKMTDestroyAllocation( [[m_hAllocation]] )
+
+            * Kernel Jump [[DestroyAllocation]]
+
+      + delete [[pCtx]]
+        - [[LRBKMTContext]]::CloseAdapter
+          + [[LRBKMTContext]]::DestroyDevice
+            - [[LRBKMTContext]]::DestroyContext
+              + D3DKMTDestroyContext( [[m_hContext]] )
+
+                * Kernel Jump [[DestroyContext]]
+
+            - D3DKMTDestroyDevice( [[m_hDevice]] )
+
+              * Kernel Jump [[DestroyDevice]]
+
+          + D3DKMTCloseAdapter( [[m_hAdapter]] )
+
+            * Kernel Jump [[CloseAdapter]]
+
+*** Kernel Level Code
+**** OpenAdapterFromGdiDisplayName
+     Not sure..
+**** QueryAdapterInfo
+     - DxgkDdiQueryAdapterInfo
+     - Must exist multiple handlers
+**** CreateDevice
+     - [[GfxDevice]]::DxgkDdiCreateDevice( [[CAdapter]]::[[in_hAdapter]] [[out_psData]] )
+       + [[pGfxDevice]] <- [[GfxDevice]]::GfxDevice
+         - m_uOSHandleGen.Initialize
+           + 
+       + vaBase, vaRange <- [[CAdapter]]::GetAllocationManager
+       + [[pGfxDevice]]->m_genAddress.Initialize(vaBase, vaRange)
+       + [[in_hAdapter]] [[CAdapter]]::AddGfxDevice( [[pGfxDevice]] )
+**** CreateContext
+     
+**** CreateAllocation
+     
+**** Render
+     
+**** DestroyAllocation
+     
+**** DestroyContext
+     
+**** DestroyDevice
+     
+**** CloseAdapter
+     
+* Driver Initialization
+** Files [KMD]:
+*** Display/system
+    + vidmini.c
+      - function DriverEntry
+    + minsuppt.c
+      - function SystemDDIInitialize
+*** Display/Display
+    + VidPn/MMDMMDdi.c
+      - function DisplayDDIInitialize
+*** Render/DDI
+    + AdapterLayer.cpp
+      - function RenderDriverEntry
+** Driver Setup
+*** Kernel Level Code
+**** DriverEntry
+***** SystemDDIInitialize
+      ** Function Setup
+        - AddDevice
+        - StartDevice
+        - StopDevice
+        - RemoveDevice
+        - DispatchIoRequest
+        - QueryInterface
+        - InterruptRoutine
+        - DpcRoutine
+        - ControlInterrupt
+        - SetPowerState
+        - NotifyAcpiEvent
+        - ResetDevice
+        - Unload
+        - ResetFromTimeout
+        - RestartFromTimeout
+        - CollectDbgInfo
+***** RenderDriverEntry
+      ** Function Setup
+      ** AllocationManager::
+        - CreateAllocation
+        - DestroyAllocation
+        - DescribeAllocation
+        - GetStandardAllocationDriverData
+        - BuildPagingBuffer
+        - AcquireSwizzlingRange
+        - ReleaseSwizzlingRange
+      ** DmaBufferManagerV1::
+        - Patch
+        - SubmitCommand
+        - PreemptCommand
+        - Render
+        - Present
+      ** GfxDevice::
+        - CreateDevice
+        - DestroyDevice
+        - OpenAllocation
+        - CloseAllocation
+      ** GfxContext::
+        - CreateContext
+        - DestroyContext
+      - QueryAdapterInfo
+      - QueryCurrentFence
+      - RenderKm
+***** DisplayDDIInitialize
+      ** Function Setup
+        - Various Hardware Functions
+***** ServiceDDIInitialize
+      - Not implemented in code
+***** DxgkInitialize
+      - Not implemented in code
+*** Functional Progression
+**** Command and DMA Buffers
+     - Command Buffer
+       + Command buffer is never accessed by the GPU
+       + Allocated in private memory of the application
+       + Memory is pageable
+     - DMA Buffer
+       + Based on a validated Command Buffer
+       + Allocated by the display miniport driver from kernel pageable
+         memory
+       + Display miniport buffer must page-lock the DMA buffer and map
+         it through an aperture
+**** Submitting a command buffer
+     - DxgkDdiRender is called to validate the
+       command buffer
+     - DxgkDdiBuildPagingBuffer is called to create a DMA buffer to
+       allocate an area to move to and from GPU accessible memory
+     - DxgkDdiPatch is called (by the GPU scheduler) to assign a
+       physical address to the resource in the DMA buffer
+     - DxgkDdiSubmitCommand is called (by the GPU scheduler) to queue
+       the paging buffer to the GPU
+     - GxgkDdiSubmitCommand is called (by the GPU scheduler) to queue
+       the DMA buffer.  When the GPU is done, an interrupt is
+       generated
+     - DxgkDdiInterruptRoutine is called (upon interrupt); it should
+       read, from the GPU, the id of the completed DMA
+     - DxgkCbNotifyInterrupt is called (by the driver) to notify the
+       GPU scheduler that the DMA is complete
+     - DxgkCbQueueDpc is called (by the driver) to queue a deferred
+       procedure call
+     - The driver is notified to handle most of the DMA buffer
+       processing
+* Driver DMA
+** Files [KMD]:
+*** Display/system
