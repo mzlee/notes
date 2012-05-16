@@ -1,6 +1,12 @@
 #+TITLE: Notes about Anon-Sub (Anonymous Subscriptions)
 #+STARTUP: showall
 
+* Tasks
+  + Reimplement in C
+  + Implement it on smart card/Android device (if possible)
+  + Look at OAuth
+  + Implement on a router
+
 * Schemes
 ** PRF + Interval Chain
    Pros:
