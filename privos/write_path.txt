@@ -1,0 +1,169 @@
+
+
+1 Standard Write Path 
+----------------------
+  - shrink_inactive_list (searches for inactive pages and adds them to
+    a list for shrink_page_list)
+    if none are taken, then return
+  - shrink_page_list (this may be a place to rate limit)
+    mm/vmscan.c
+    1. while page_list not empty:
+       1) page = page_list.pop_lru
+       2) if page.locked: keep
+       3) if not page.evictable: cull_mlocked
+       4) if page.mapped or page.in_swap_cache: nr_scanned++
+       5) if page.file_mapped or page.in_swap_cache: may_enter_fs = True
+       6) if page.is_anon and not page.in_swap_cache:
+          1) if add_to_swap: may_enter_fs = True
+             1) assert page.locked
+             2) assert page.up_to_date
+             3) get_swap_page
+                1) => lock(swap_lock)
+                2) scan_swap_map
+                3) may __try_to_reclaim_swap
+                4) <= unlock(swap_lock)
+             4) add_to_swap_cache(page, entry, gfp_mask)
+                1) __add_to_swap_cache(page, entry)
+                   1) assert page.locked
+                   2) assert not page.in_swap_cache
+                   3) assert page.is_swap_backed
+                   4) page_cache_get(page)
+                   5) page.set_in_swap_cache
+                   6) page.set_private
+                   7) radix_tree_insert(swapper_space.page_tree,
+                      entry, page)
+             5) if success: set_page_dirty(page)
+                else: swapcache_free
+       7) mapping = page_mapping(page)
+          1) if page.in_swap_cache: return swapper_space
+       8) if page.mapped and mapping:
+          1) if try_to_unmap(page) == SWAP_SUCCESS: continue
+             1) if page.is_anon: try_to_unmap_anon(page)
+                1) => lock(page.anon_vma)
+                2) foreach(vma in anon_vma)
+                   try_to_unmap_one(page, vma, address)
+                   // nuke the pte
+                   1) page_check_address
+                      // Check address
+                      1) => lock(ptl)
+                   2) if page.in_swap_cache:
+                      1) if swap_duplicate(page): SWAP_FAIL
+                         1) => lock(swap_lock)
+                         2) // Check and increment
+                         3) <= lock(swap_lock)
+                      2) dec_mm_counter(vma->vm_mm, ANON)
+                      3) inc_mm_counter(vma->vm_mm, SWAPENT)
+                   3) set_pte_at(vma->vm_mm, address, pte, entry)
+                   4) page.remove_rmap
+                   5) page.cache_release
+                   6) <= unlock(ptl)
+                3) <= unlock(page.anon_vma)
+       9) if page.is_dirty and reference == PAGEREF_RECLAIM and
+          may_enter_fs and sc->may_writepage:
+          1) pageout(page, mapping, sc)
+             1) page.is_page_cache_freeable
+             2) page.mapping is not None
+             3) if clear_page_dirty_for_io(page)
+                1) assert page.locked
+                2) if mapping and mapping_cap_account_dirty:
+                   1) if page.mkclean(): page.set_dirty()
+                3) mapping->a_ops->writepage(page)
+                   if page.shmem: ==> shmem_writepage
+                   1) shmem_writepage(page, wbc):
+                      1) assert page.locked
+                      2) if for_reclaim: swap = get_swap_page()
+                      3) if swap: => lock(shmem_swaplist)
+                      4) => lock(info->lock)
+                      5) if swap: <= unlock(shmem_swaplist)
+                      6) entry = shmem_swp_entry(info, index)
+                      7) if entry: free_swap_and_cache(entry)
+                      8) if swap and add_to_swap_cache(page, swap):
+                         1) page.delete_from_cache
+                         2) shmem.swp_set(info, entry)
+                         3) shmem.swp_unmap(entry)
+                         4) shmem.alloc(swap)
+                         5) <= unlock(info->lock)
+                         6) assert not page.mapped
+                         7) swap_writepage(page, wbc)
+                         8) return 0
+                   if page.anon: ==> swap_writepage
+                   1) swap_writepage(page, wbc):
+                      1) if page.try_to_free_swap(): <= unlock(page); return;
+                      2) bio = get_swap_bio(gfp_flags, page, end_io_fn)
+                         1) bio = bio_alloc(gfp_flags, 1)
+                            1) bio_alloc_bioset(mask, 1)
+                               // Allocate from bio mempool
+                         2) if bio:
+                            1) map_swap_page(page, &bdev)
+                               1) entry = page.private
+                               2) return map_swap_entry(entry, bdev)
+                                  1) *bdev = si->bdev
+                                  2) offset = swp_offset(entry)
+                      3) page.set_writeback()
+                      4) *if page->swap_key: swap_encryptpage(page)*
+                         1) *key = swap_get_key(entry)*
+                            1) => lock(lock_table + entry)
+                         2) sg_init_table and sg_set_page
+                         3) priv_swap_get(key)
+                            1) => lock(priv_swapper[i])
+                         4) set_iv and set_key
+                         5) cipher_encrypt
+                         6) <= unlock(priv_swapper[i])
+                         7) <= unlock(lock_table + entry)
+                      5) <= unlock(page)
+                      6) submit_bio(rw, bio)
+                         1) generic_make_request(bio)
+                            1) if current->bio_list:
+                               current->bio_list.append(bio); return;
+                            2) current->bio_list = init(bio_list_on_stack)
+                            3) do:
+                               1) __generic_make_request(bio)
+                                  1) might_sleep()
+                                  2) check_eod(bio, nr_sectors)
+                                  3) do:
+                                     1) q = bio->bdev.get_queue
+                                     2) blk_partition_remap(bio)
+                                     3) if bio.integrity_enabled and
+                                        bio.integrity_prep(): goto end_io
+                                     4) q->make_request_fn(q, bio)
+                               2) bio = current->bio_list.pop()
+                            4) while (bio)
+                            5) current->bio_list = NULL
+                4) return PAGE_SUCCESS
+             4) else: return PAGE_CLEAN
+          2) PAGE_CLEAN or PAGE_SUCCESS and not page.writeback, not page.dirty:
+       10) if page.has_private:
+           1) try_to_release_page // try metadata buffers
+       11) page.__clear_locked
+       12) nr_reclaimed++
+       13) free_pages.add(page)
+
+2 Async Read Path 
+------------------
+  - swapin_readahead
+    mm/swap_state.c
+    1. for (readahead_range)
+       1. page = read_swap_cache_async(swp_type + offset, mask, vma, addr)
+       2. if not page: break
+       3. page_cache_release(page)
+    2. lru_add_drain()
+    3. read_swap_cache_async(entry, mask, vma, addr)
+       1. do:
+          1. if found_page = find_page(swapper_space, entry): break
+             1. pagep = swapper_space.page_tree.lookup_slot(offset)
+             2. if pagep: page = pagep.deref
+             3. return page
+          2. if not new_page: new_page = alloc_page_vma(mask, vma, addr)
+             1. if not new_page: break (ENOMEM)
+          3. radix_tree_preload(mask & GFP_KERNEL)
+          4. swapcache_prepare(entry)
+             1. __swap_duplicate(entry, SWAP_HAS_
+                1. if non_swap_entry(entry): return EINVAL
+                2. swap_info_get(entry) // in spirit, not in practice
+                3. => lock(swap_lock)
+                4. if count and not(count & SWAP_HAS_CACHE):
+                   count |= SWAP_HAS_CACHE
+                   swap_info->swap_map[offset] = count
+                5. else if (count & SWAP_HAS_CACHE): return EEXIST
+                6. else: return ENOENT
+                7. <= unlock(swap_lock)
