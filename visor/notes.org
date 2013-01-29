@@ -1,0 +1,5 @@
+#+STARTUP: showall
+
+* Basic Idea
+  - Switch bare metal operating systems without having to reboot
+  - 
