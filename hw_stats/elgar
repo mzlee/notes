@@ -1,0 +1,420 @@
+elgar
+    description: Desktop Computer
+    product: OptiPlex 980
+    vendor: Dell Inc.
+    serial: CWBFCP1
+    width: 64 bits
+    capabilities: smbios-2.6 dmi-2.6 vsyscall64 vsyscall32
+    configuration: administrator_password=enabled boot=normal chassis=desktop power-on_password=enabled uuid=44454C4C-5700-1042-8046-C3C04F435031
+  *-core
+       description: Motherboard
+       product: 0D441T
+       vendor: Dell Inc.
+       physical id: 0
+       version: A03
+       serial: ..CN7360411M03RB.
+     *-firmware
+          description: BIOS
+          vendor: Dell Inc.
+          physical id: 0
+          version: A05 (11/03/2010)
+          size: 64KiB
+          capacity: 8128KiB
+          capabilities: pci pnp apm upgrade shadowing escd cdboot bootselect edd int13floppytoshiba int13floppy720 int5printscreen int9keyboard int14serial int17printer acpi usb biosbootspecification netboot
+     *-cpu
+          description: CPU
+          product: Intel(R) Core(TM) i5 CPU         680  @ 3.60GHz
+          vendor: Intel Corp.
+          physical id: 400
+          bus info: cpu@0
+          slot: CPU
+          size: 3600MHz
+          width: 64 bits
+          clock: 133MHz
+          capabilities: fpu fpu_exception wp vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp x86-64 constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 cx16 xtpr pdcm sse4_1 sse4_2 popcnt aes lahf_lm ida arat tpr_shadow vnmi flexpriority ept vpid
+        *-cache:0
+             description: L1 cache
+             physical id: 700
+             size: 128KiB
+             capacity: 128KiB
+             capabilities: internal write-through
+        *-cache:1
+             description: L2 cache
+             physical id: 701
+             size: 512KiB
+             capacity: 512KiB
+             capabilities: internal write-through unified
+        *-cache:2
+             description: L3 cache
+             physical id: 704
+             size: 4MiB
+             capacity: 4MiB
+             capabilities: internal write-back unified
+     *-memory
+          description: System Memory
+          physical id: 1000
+          slot: System board or motherboard
+          size: 8GiB
+        *-bank:0
+             description: DIMM 1333 MHz (0.8 ns)
+             product: HMT351U6BFR8C-H9
+             vendor: 80AD000080AD
+             physical id: 0
+             serial: 2E74EDE2
+             slot: DIMM 1
+             size: 4GiB
+             width: 64 bits
+             clock: 1333MHz (0.8ns)
+        *-bank:1
+             description: DIMM 1333 MHz (0.8 ns)
+             product: HMT351U6BFR8C-H9
+             vendor: 80AD000080AD
+             physical id: 1
+             serial: 2EB4EDE3
+             slot: DIMM 2
+             size: 4GiB
+             width: 64 bits
+             clock: 1333MHz (0.8ns)
+        *-bank:2
+             description: DIMM Synchronous [empty]
+             vendor: FFFFFFFFFFFF
+             physical id: 2
+             serial: FFFFFFFF
+             slot: DIMM 3
+             width: 64 bits
+        *-bank:3
+             description: DIMM Synchronous [empty]
+             vendor: FFFFFFFFFFFF
+             physical id: 3
+             serial: FFFFFFFF
+             slot: DIMM 4
+             width: 64 bits
+     *-pci:0
+          description: Host bridge
+          product: Core Processor DRAM Controller
+          vendor: Intel Corporation
+          physical id: 100
+          bus info: pci@0000:00:00.0
+          version: 02
+          width: 32 bits
+          clock: 33MHz
+        *-pci:0
+             description: PCI bridge
+             product: Core Processor PCI Express x16 Root Port
+             vendor: Intel Corporation
+             physical id: 1
+             bus info: pci@0000:00:01.0
+             version: 02
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm msi pciexpress bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:40 ioport:d000(size=4096) memory:f7d00000-f7efffff ioport:e0000000(size=268435456)
+           *-display
+                description: VGA compatible controller
+                product: RV620 LE [Radeon HD 3450]
+                vendor: ATI Technologies Inc
+                physical id: 0
+                bus info: pci@0000:01:00.0
+                version: 00
+                width: 64 bits
+                clock: 33MHz
+                capabilities: pm pciexpress msi bus_master cap_list rom
+                configuration: driver=radeon latency=0
+                resources: irq:62 memory:e0000000-efffffff memory:f7df0000-f7dfffff ioport:dc00(size=256) memory:f7e00000-f7e1ffff
+        *-communication:0 UNCLAIMED
+             description: Communication controller
+             product: 5 Series/3400 Series Chipset HECI Controller
+             vendor: Intel Corporation
+             physical id: 16
+             bus info: pci@0000:00:16.0
+             version: 06
+             width: 64 bits
+             clock: 33MHz
+             capabilities: pm msi bus_master cap_list
+             configuration: latency=0
+             resources: memory:feda6000-feda600f
+        *-ide
+             description: IDE interface
+             product: 5 Series/3400 Series Chipset PT IDER Controller
+             vendor: Intel Corporation
+             physical id: 16.2
+             bus info: pci@0000:00:16.2
+             version: 06
+             width: 32 bits
+             clock: 66MHz
+             capabilities: ide pm msi bus_master cap_list
+             configuration: driver=ata_generic latency=0
+             resources: irq:18 ioport:fe80(size=8) ioport:fe90(size=4) ioport:fea0(size=8) ioport:feb0(size=4) ioport:fef0(size=16)
+        *-communication:1
+             description: Serial controller
+             product: 5 Series/3400 Series Chipset KT Controller
+             vendor: Intel Corporation
+             physical id: 16.3
+             bus info: pci@0000:00:16.3
+             version: 06
+             width: 32 bits
+             clock: 66MHz
+             capabilities: pm msi bus_master cap_list
+             configuration: driver=serial latency=0
+             resources: irq:17 ioport:ec98(size=8) memory:f7fdb000-f7fdbfff
+        *-network
+             description: Ethernet interface
+             product: 82578DM Gigabit Network Connection
+             vendor: Intel Corporation
+             physical id: 19
+             bus info: pci@0000:00:19.0
+             logical name: eth0
+             version: 05
+             serial: 78:2b:cb:8b:1f:8d
+             size: 1GB/s
+             capacity: 1GB/s
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pm msi bus_master cap_list ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+             configuration: autonegotiation=on broadcast=yes driver=e1000e driverversion=1.3.10-k2 duplex=full firmware=0.12-2 ip=128.83.122.103 latency=0 link=yes multicast=yes port=twisted pair speed=1GB/s
+             resources: irq:42 memory:f7fe0000-f7ffffff memory:f7fdc000-f7fdcfff ioport:ecc0(size=32)
+        *-usb:0
+             description: USB Controller
+             product: 5 Series/3400 Series Chipset USB2 Enhanced Host Controller
+             vendor: Intel Corporation
+             physical id: 1a
+             bus info: pci@0000:00:1a.0
+             version: 05
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pm debug bus_master cap_list
+             configuration: driver=ehci_hcd latency=0
+             resources: irq:16 memory:f7fdd000-f7fdd3ff
+        *-multimedia
+             description: Audio device
+             product: 5 Series/3400 Series Chipset High Definition Audio
+             vendor: Intel Corporation
+             physical id: 1b
+             bus info: pci@0000:00:1b.0
+             version: 05
+             width: 64 bits
+             clock: 33MHz
+             capabilities: pm msi pciexpress bus_master cap_list
+             configuration: driver=HDA Intel latency=0
+             resources: irq:61 memory:ff87c000-ff87ffff
+        *-pci:1
+             description: PCI bridge
+             product: 5 Series/3400 Series Chipset PCI Express Root Port 1
+             vendor: Intel Corporation
+             physical id: 1c
+             bus info: pci@0000:00:1c.0
+             version: 05
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pciexpress msi pm bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:16 ioport:c000(size=4096) memory:f7000000-f7cfffff ioport:f0000000(size=4194304)
+           *-network:0 DISABLED
+                description: Ethernet interface
+                product: 82576 Gigabit Network Connection
+                vendor: Intel Corporation
+                physical id: 0
+                bus info: pci@0000:02:00.0
+                logical name: eth4
+                version: 01
+                serial: 90:e2:ba:02:0f:ea
+                capacity: 1GB/s
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm msi msix pciexpress bus_master cap_list rom ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+                configuration: autonegotiation=on broadcast=yes driver=igb driverversion=3.0.6-k2 firmware=1.2-1 latency=0 link=no multicast=yes port=twisted pair
+                resources: irq:16 memory:f7cc0000-f7cdffff memory:f7000000-f73fffff ioport:ccc0(size=32) memory:f7cb8000-f7cbbfff memory:f7800000-f7bfffff memory:f7c00000-f7c1ffff memory:f7c20000-f7c3ffff
+           *-network:1
+                description: Ethernet interface
+                product: 82576 Gigabit Network Connection
+                vendor: Intel Corporation
+                physical id: 0.1
+                bus info: pci@0000:02:00.1
+                logical name: eth3
+                version: 01
+                serial: 90:e2:ba:02:0f:eb
+                size: 1GB/s
+                capacity: 1GB/s
+                width: 32 bits
+                clock: 33MHz
+                capabilities: pm msi msix pciexpress bus_master cap_list rom ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+                configuration: autonegotiation=on broadcast=yes driver=igb driverversion=3.0.6-k2 duplex=full firmware=1.2-1 latency=0 link=yes multicast=yes port=twisted pair speed=1GB/s
+                resources: irq:17 memory:f7ce0000-f7cfffff memory:f7400000-f77fffff ioport:cce0(size=32) memory:f7cbc000-f7cbffff memory:f0000000-f03fffff memory:f7c40000-f7c5ffff memory:f7c60000-f7c7ffff
+        *-pci:2
+             description: PCI bridge
+             product: 5 Series/3400 Series Chipset PCI Express Root Port 5
+             vendor: Intel Corporation
+             physical id: 1c.4
+             bus info: pci@0000:00:1c.4
+             version: 05
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pciexpress msi pm bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:16 ioport:1000(size=4096) memory:f0400000-f05fffff ioport:f0600000(size=2097152)
+        *-usb:1
+             description: USB Controller
+             product: 5 Series/3400 Series Chipset USB2 Enhanced Host Controller
+             vendor: Intel Corporation
+             physical id: 1d
+             bus info: pci@0000:00:1d.0
+             version: 05
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pm debug bus_master cap_list
+             configuration: driver=ehci_hcd latency=0
+             resources: irq:23 memory:f7fde000-f7fde3ff
+        *-pci:3
+             description: PCI bridge
+             product: 82801 PCI Bridge
+             vendor: Intel Corporation
+             physical id: 1e
+             bus info: pci@0000:00:1e.0
+             version: a5
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci bus_master cap_list
+        *-isa
+             description: ISA bridge
+             product: 5 Series Chipset LPC Interface Controller
+             vendor: Intel Corporation
+             physical id: 1f
+             bus info: pci@0000:00:1f.0
+             version: 05
+             width: 32 bits
+             clock: 33MHz
+             capabilities: isa bus_master cap_list
+             configuration: latency=0
+        *-storage
+             description: RAID bus controller
+             product: 82801 SATA RAID Controller
+             vendor: Intel Corporation
+             physical id: 1f.2
+             bus info: pci@0000:00:1f.2
+             logical name: scsi0
+             logical name: scsi1
+             version: 05
+             width: 32 bits
+             clock: 66MHz
+             capabilities: storage msi pm bus_master cap_list emulated
+             configuration: driver=ahci latency=0
+             resources: irq:41 ioport:fe00(size=8) ioport:fe10(size=4) ioport:fe20(size=8) ioport:fe30(size=4) ioport:fec0(size=32) memory:ff870000-ff8707ff
+           *-disk
+                description: ATA Disk
+                product: ST9250410AS
+                vendor: Seagate
+                physical id: 0
+                bus info: scsi@0:0.0.0
+                logical name: /dev/sda
+                version: D005
+                serial: 5VGA59JV
+                size: 232GiB (250GB)
+                capabilities: partitioned partitioned:dos
+                configuration: ansiversion=5 signature=0007cb2d
+              *-volume:0
+                   description: EXT3 volume
+                   vendor: Linux
+                   physical id: 1
+                   bus info: scsi@0:0.0.0,1
+                   logical name: /dev/sda1
+                   logical name: /
+                   version: 1.0
+                   serial: 80bec112-fb8b-4c3d-8de5-b3cf66c77da9
+                   size: 142GiB
+                   capacity: 142GiB
+                   capabilities: primary bootable journaled large_files ext3 ext2 initialized
+                   configuration: created=2011-06-27 06:39:34 filesystem=ext3 modified=2012-04-30 18:54:47 mount.fstype=ext3 mount.options=rw,relatime,errors=remount-ro,barrier=0,data=ordered mounted=2012-05-02 14:41:17 state=mounted
+              *-volume:1
+                   description: Extended partition
+                   physical id: 2
+                   bus info: scsi@0:0.0.0,2
+                   logical name: /dev/sda2
+                   size: 6233MiB
+                   capacity: 6233MiB
+                   capabilities: primary extended partitioned partitioned:extended
+                 *-logicalvolume
+                      description: Linux filesystem partition
+                      physical id: 5
+                      logical name: /dev/sda5
+                      capacity: 6233MiB
+           *-cdrom
+                description: DVD reader
+                product: DVD-ROM TS-H353C
+                vendor: TSSTcorp
+                physical id: 1
+                bus info: scsi@1:0.0.0
+                logical name: /dev/cdrom
+                logical name: /dev/cdrw
+                logical name: /dev/dvd
+                logical name: /dev/dvdrw
+                logical name: /dev/scd0
+                logical name: /dev/sr0
+                version: D100
+                capabilities: removable audio dvd
+                configuration: ansiversion=5 status=nodisc
+        *-serial UNCLAIMED
+             description: SMBus
+             product: 5 Series/3400 Series Chipset SMBus Controller
+             vendor: Intel Corporation
+             physical id: 1f.3
+             bus info: pci@0000:00:1f.3
+             version: 05
+             width: 64 bits
+             clock: 33MHz
+             configuration: latency=0
+             resources: memory:f7fdf000-f7fdf0ff ioport:ece0(size=32)
+     *-pci:1
+          description: Host bridge
+          product: Core Processor QuickPath Architecture Generic Non-core Registers
+          vendor: Intel Corporation
+          physical id: 101
+          bus info: pci@0000:3f:00.0
+          version: 02
+          width: 32 bits
+          clock: 33MHz
+     *-pci:2
+          description: Host bridge
+          product: Core Processor QuickPath Architecture System Address Decoder
+          vendor: Intel Corporation
+          physical id: 102
+          bus info: pci@0000:3f:00.1
+          version: 02
+          width: 32 bits
+          clock: 33MHz
+     *-pci:3
+          description: Host bridge
+          product: Core Processor QPI Link 0
+          vendor: Intel Corporation
+          physical id: 103
+          bus info: pci@0000:3f:02.0
+          version: 02
+          width: 32 bits
+          clock: 33MHz
+     *-pci:4
+          description: Host bridge
+          product: Core Processor QPI Physical 0
+          vendor: Intel Corporation
+          physical id: 104
+          bus info: pci@0000:3f:02.1
+          version: 02
+          width: 32 bits
+          clock: 33MHz
+     *-pci:5
+          description: Host bridge
+          product: Core Processor Reserved
+          vendor: Intel Corporation
+          physical id: 105
+          bus info: pci@0000:3f:02.2
+          version: 02
+          width: 32 bits
+          clock: 33MHz
+     *-pci:6
+          description: Host bridge
+          product: Core Processor Reserved
+          vendor: Intel Corporation
+          physical id: 106
+          bus info: pci@0000:3f:02.3
+          version: 02
+          width: 32 bits
+          clock: 33MHz
