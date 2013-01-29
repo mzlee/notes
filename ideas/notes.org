@@ -1,0 +1,321 @@
+#+TITLE: Ideas
+#+AUTHOR: Michael Z. Lee
+#+EMAIL: mzlee@cs.utexas.edu
+
+
+* Secure Signing and Update of Attested Code
+  We would like to be able to update attested code from a remote
+  location with some reasonable security guarantee.  How thin can we
+  stretch the adverary model?  
+
+* The Use, Misuse, and Abuse of Trusted Computing
+  We would like to create a comprehensive view of the scope of
+  trusted computing technology and how and where it is used in the
+  real world.  To this end, we will collect different open and close
+  source projects that use the Trusted Platform Module in some
+  manner and test to see if they correctly implement and use the
+  interface.  Finally, we see if it is possible to circumvent the use
+  of the TPM by using an intentionally malicious implementation of a
+  software TPM to see if it is possible to break or abuse people's
+  assumption of trusted computing.
+
+* Attribute Based Encryption for ???
+  It's an interesting idea for a crypto system, now how do we apply it?
+* Stuff to do with the Larrabee
+** What's the big new change?
+   It looks like vector instructions
+   + Vector Ops
+     Either 32 or 64 bit in larger blocks of 512 bits
+     Access in bit, byte, double word, or quad size
+     32 vectors in total
+     - Optimized large block calculations
+     - Current implementation is 64 bytes
+   + Vector Masks
+     16 bit masks
+     16 vector masks total, v0 is special
+     - Current implementation is 2 bytes
+   + Scatter/Gather
+     Gather, Gather Prefetch, Scatter, Scatter Prefetch
+     Only double words
+   + Swizzles/Conversions
+** What does this mean?
+   It's a vector processor with more fine grained control.  Maybe it
+   can be viewed as a co-processor to handle large incoming and
+   outgoing data.
+
+   It's a stream processor.  Maybe it can do direct memory loads into
+   cache using a wide PCIe connect.  Additionally, how much do
+   sequential reads versus gather versus gather prefetch differ?  If
+   there's a comparable cost of sequential memory read and gather
+   prefetch, then this could do non-uniform stream processing.  Compute
+   intense and data parallel but no data locality.  From Intel: [[http://en.wikipedia.org/wiki/Intel_Array_Building_Blocks][ArBB]],
+   a library for exploiting data parallelism in multi-core processors.
+
+   It's a Digital Signal Processor.  Though, it's probably not limited
+   to host initiated memory transfers.
+
+   It's a General Purpose GPU. But there are faster things out there.
+   Then this means we want to figure out a way to exploit the low
+   level hardware interface and access that we're afforded.
+
+   As is, we won't be able to beat a GPU in a straight comparison.
+
+** What's going on here?
+   Each vector is 512 bits wide.  Does this mean that for a given
+   instruction, this takes 8 or 16 of the 32 cores or is there a
+   vector register for each core.  What kind of cache coherency does
+   it have?  According to [[http://en.wikipedia.org/wiki/SIMD#Hardware][wiki]], Larrabee has two vector registers per
+   core.  It's not clear what exactly the hardware has.  It may be
+   16 cores + hyperthreading, or 32 discrete cores.  There is an
+   assertion that each core runs up to four threads.  Everything is
+   still in-order, but this could mean a theoretical 128 kernel
+   threads.
+
+   From another [[http://en.wikipedia.org/wiki/Larrabee_(microarchitecture)#Differences_with_current_GPUs][wiki]] page, the three main differences from GPUs are:
+   + x86 with extensions
+   + cache coherency
+   + no specialized graphics hardware
+
+   And the major differences from CPUs are:
+   + Only in-order execution -> execution is more deterministic (per
+     core)
+   + Vector unit is 4 times wider than SSE with vector masks and
+     scatter/gather for data manipulation
+   + Has a 1024-bit ring bus for communication between cores and
+     memory
+   + Explicit cache control instructions, including explicit
+     prefetching into L2 or L1 caches
+   + Each core support 4-way interleaved multithreading, and 4 copies
+     of each process register
+
+*** How does it execute?
+    The Dev machine is the basic development platform.  The LRB
+    machine is a bit more unclear.  It's very well possible that the
+    Larrabee is executing everything, but I think it's more likely
+    that there's a normal (enough) installation of Windows 7 on the
+    box with the Larrabee serving is the graphics processor.  Thus,
+    it's stock Win7, communicating with the Larrabee through the
+    graphics channel.  The scheduling is done at the user level on the
+    Larrabee which is running an OS driver to virtualize the normal OS
+    services.
+
+    In theory, I should be able to compile a program using the
+    special compiler and the rest will be automatic.  In theory...
+
+** Data Transfer Rates
+   Larrabee ring buffer: 512 bits each way, 2GHz clock => 125 GBps if
+   local memory access is fast enough to support a full 512 bit (64
+   byte) write per cycle
+
+   PCIe 2.0 transfer rate: 1 x 16 bits each way, 5 GHz clock => 8 GBps
+   if the device has a high enough limit and high enough priority.
+   Note, the data encoding means max utilization is only 80% of the
+   possible bandwidth
+
+   DDR3 Memory read rate: Wide number of bits, varying clock speed
+   6 GBps to 16 GBps transfer.  DDR2 lowest upper bound is 3 GBps
+
+   There shouldn't be any problem with data throughput from memory to
+   Larrabee, but there may be a latency issue or require main CPU
+   intervention.
+
+   Could we test this with a dev to lrb data transfer?  Probably not.
+
+** Wins
+   Low level access.  Need to figure out how it's connected first.
+
+   Can we do something interesting such as shared instructions across
+   processes?  Two related processes with a shared memory map running
+   the same computation over different (though possibly similar
+   valued) data.  For example, a speculation system.  If it's
+   possible to turn a branch into two different views of memory
+   performing the same computation, it might be possible share
+   instructions.
+
+   Speed ups compared to the CPU processing that normally benefit from
+   SSE instructions.  For example, BigNum in openssl.
+
+* The Four Rings to Secure Them All
+  Your computer has four protection rings, but we're only commonly
+  familiar with two of the rings: ring 0 and ring 3.  With the advent
+  of new hardware and new technology, we have seen additional use and
+  additional classifications such as ring -1 and -2.  But what of the
+  ones in the middle?  Is there really nothing interesting between
+  root and user?
+
+  As an attempt to address this, we try to create a better seperation
+  and compelling reason to include ring 1 and ring 2.  Recent work
+  with library OS's showed that not only is it possible, but there are
+  some compelling reasons to further separate the managing and
+  multiplexing of resources from the user application itself.  To
+  further this, I propose the use of four layers: hardware kernel,
+  driver interface, OS interface, and user applications.  Creating
+  several levels of separation and well defined interfaces at each
+  level, we can get a better understanding of control flow.
+
+  Hardware Kernel:
+  + Deals with memory and CPU utilization
+  + Keeps a page table per process and implements scheduling
+  + Sets up and defines the interrupts and upcalls for higher level
+    servicing
+  + Implements only the basic services it needs to be able to set up
+    the higher levels
+    - Boot loader
+    - Paging
+    - Scheduling
+  
+  Driver Interface:
+  + Deals with trying to standardize the different pieces of hardware
+    into a single, conherent interface
+  + Implements the services needed to interact with various IO devices
+    - Block Devices
+    - Network Driver
+    - Keyboard, Mouse, Screen
+
+  OS Library:
+  + Implements the application API
+    - POSIX
+    - X11
+
+  User Application:
+  + The actual user application
+  + Shouldn't need modification
+
+** Constraining the Interfaces
+   A goal is to limit the number of transfer points and function calls
+   needed.  Each layer below can copy the necessary entry points into
+   the upper layer's memory space.  In some ways, this is just taking
+   a bare metal VMM, putting a paravirtualized OS on top and further
+   splitting the virtual drivers from the rest of the operating
+   system.  However, the goal is not to have all of the capabilities
+   of multi-processing in the upper levels of the operating system and
+   putting the lower memory management solely in the hardware kernel.
+
+*** Kernel
+    Below:
+    + Bare Metal
+    Above:
+    + Memory Allocation
+    + Process Allocation
+    + Time Slicing
+    + Final Level of Mutual Exclusion
+
+*** Driver
+    Below:
+    + Memory Reservation
+    Above:
+    + Input Streams
+    + Output Streams
+    + Mutual Exclusion
+
+*** Library
+    Below:
+    + IO Streams
+    Above:
+    + Expected API (POSIX)
+
+*** Application
+    Below:
+    * Expected API
+
+** Implementation
+   In theory, I could take a copy of Linux, libc, and windowing system
+   and tear it into pieces to separate out the management from the
+   services from the interface and finally application.  The OS
+   interface can be a per-process instance (as some of it already is),
+   and the drivers will sit aside almost like a micro kernel construction.
+
+* Process Fork and Join
+  Serializing a process to pause and restart has been shown to be
+  possible.  The necessary services will need to be copied and will
+  need to be established on top of an interface that is fairly
+  hardware agnostic.  Keeping a small in-memory file-system, normal
+  application services and a way to simply translate a small interface
+  into the necessary changes on the hardware should allow applications
+  to pause, save to disk, migrate, and many other services that were
+  primarily reserved for virtual machines.
+
+  However, something that was probably previously impossible is the
+  ability to fork and merge running applications.  In the most general
+  sense, any long running program must have a loop waiting for a
+  resource or performing repeated computation.  The idea of program
+  checkpoints has been around for a long (enough) time and restoring
+  system state to an earlier version is certainly possible.  However,
+  what would be more interesting is automatically identifying the main
+  loop, synchronizing any transient state, and reconciling the
+  persistent changes to merge a previously forked program.
+
+** Implemenation
+   I should be able to checkpoint a program from a kernel module or
+   virtual machine.  Furthermore, implementing an in memory filesystem
+   seems perfectly reasonable as just buffers in a flat namespace.
+   Transient versus persistent program state changes could then be
+   changes in "memory" versus changes on the "file system".
+
+   The trick in getting the underlying operating system to resume the
+   serialized program state.  It would have to be a specialized
+   loader.  Things like input, output, and cached buffers may pose a
+   problem as two different programs would be reading from different
+   things.  This could all just be discarded upon serialization.
+
+** Motivation
+   Being able to pause and migrate a program is a powerful thing.
+   Making it more platform agnostic is also useful because then a
+   program can follow you around.  However, the ability to branch a
+   long running program, merge, and otherwise version your changes
+   while still in the program is something that is even beyond what
+   migration could present.  One could open a document, send it to
+   many collaborators, and have live merging within a legacy
+   application.
+
+   This would probably require program specific merge tools...
+
+* Stackable Virtual Machines
+  Now that cloud visor exists, is there anything else that's
+  interesting about stacking virtual machines?  Are there additional
+  security guarantees one might be able to provide in the hypervisor
+  layer?
+* Address Space Randomization
+  Is it possible to write an operating system extension and gcc
+  extension to make it possible to randomize program text and data on
+  a page level?
+
+  Or possibly something like a user library that can use EPT to store
+  offsets and translations for an underlying program.
+
+  How bad is this from a performance perspective?
+
+  Does this fix anything if the ROP also uses this address translation?
+* JavaScript Measurement Study
+  What happens when you break up a browser's origin policy and only
+  allow code from a given origin to access its own objects?  How much
+  stuff does this break?
+
+  What if you also taint objects with a principle upon use?  And how
+  do you fix this once you understand what's broken?
+
+  Just how many websites import other people's code?  How big is this
+  trusted computing base?
+** Something bigger
+   More than just a measurement study, can I make an interesting
+   browser that splits the same-origin-policy in JavaScript.  Has this
+   been done (AdSentry) or done well enough?
+
+* Three Party Computation
+  How do you do three party computation when there is mutual distrust
+  between all of the parties?  Is there some way to prove that this is
+  or isn't possible (not quite on the level of FLP or the CAP
+  theorem).
+
+  Assumptions: One party (the bank) is trusted to do what is asked of
+  it.  The other two parties are at odds with each other.
+
+  The basic model is C, S, B:
+      C <---> S
+       \     /
+        \   /
+         \ /
+          B
+  The solution is to not allow non-hmac'd strings.  It's sort of
+      alright to not hmac the user request so long as the server
+      response is hmac'd.
