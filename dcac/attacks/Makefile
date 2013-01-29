@@ -1,5 +1,6 @@
 SPLOITS = epfb shell simple
-CFLAGS = -g -lc
+CFLAGS = -g
+LDFLAGS = -lc
 CC = gcc
 LD = gcc
 
