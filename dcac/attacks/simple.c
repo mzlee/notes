@@ -2,21 +2,41 @@
 #include <string.h>
 #include <sys/syscall.h>
 
-static void inline esp()
+static unsigned long inline esp()
 {
    unsigned long a = 0;
    __asm__ ("\tmov %%rsp, %%rax\n" : "=a"(a) );
    printf("%%rsp %lx\n", a);
+   return a;
+}
+static unsigned long inline ebp()
+{
+   unsigned long a = 0;
+   __asm__ ("\tmov %%rbp, %%rax\n" : "=a"(a) );
+   printf("%%rbp %lx\n", a);
+   return a;
 }
 
 void fn(char *str)
 {
    char buf[32] = {0};
    char *cp = buf;
-   esp();
+   unsigned char *sp = (char *)esp();
+   unsigned char *bp = (char *)ebp();
+   int i;
+   for (i = 8; i > (sp - bp); i--) {
+      printf("%02x", bp[i-1]);
+      if ((255+i) % 32 == 0)
+         printf("\n");
+      else if ((255+i) % 8 == 0)
+         printf("   ");
+      else if ((255+i) % 4 == 0)
+         printf(" ");
+   }
    while (*str && *str != ' ') {
       *cp++ = *str++;
    }
+   printf("----------------\n");
    for (cp = buf; *cp; cp++) {
       printf("%02x", (unsigned char)*cp);
       if (((unsigned long)cp + 1) % 16 == 0) {
