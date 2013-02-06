@@ -5,6 +5,8 @@
 # do it without using dalvik.  Do it bare metal in the Linux kernel.  Is
 # that even reasonable?
 
+## MongoDB is auto sharding
+
 * Introduction
   More and more home users have multiple computers: a computer in
   every person's pocket, a laptop for work, a desktop for home, a game
