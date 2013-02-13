@@ -5,6 +5,8 @@
 # do it without using dalvik.  Do it bare metal in the Linux kernel.  Is
 # that even reasonable?
 
+# Also: http://research.microsoft.com/en-us/projects/homeos/ :(
+
 ## MongoDB is auto sharding
 
 * Introduction
