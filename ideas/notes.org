@@ -3,6 +3,26 @@
 #+EMAIL: mzlee@cs.utexas.edu
 #+STARTUP: showall
 
+* Language tranalation:
+  Translated Java bytecode (or DEX) into JavaScript.  Why?  More
+  efficient, cross platform execution in a browser.  No more Java
+  applet, just run in in JS.
+  - Frabrise already showed it was possible to execute x86 in JS,
+    can we do a more direct translation?
+  - Could it be possible to run Android apps in a browser? That'd be
+    cool.
+
+* JavaScript record and replay
+  Is there some kind of computational offload that can happen here?
+  Basically, a "beefy" server plays the JavaScript and records the
+  highlights.  This is translated to something that can be replayed
+  with less computation on the client machine.
+  - Take the model Kindle Fire has, and make it more general.  Screw
+    privacy..
+  - How do you handle user interaction?
+  - How do you handle side effects?
+  - Can you offload your own home desktop for this task?
+
 * ShardOS (for Sharded Operating System or Shared Application Resource and Data Operating System)
   or LANOS (for LAN Operating System or Local Area Network Operating System)
   - Homes are connected.  There has been a shift in computing where
