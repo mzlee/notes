@@ -3,6 +3,16 @@
 #+EMAIL: mzlee@cs.utexas.edu
 #+STARTUP: showall
 
+* Use DUNE for something fun
+  Seems like it could be fun.
+
+* Look at cryptographic accumulators
+  Why do they take 40KB, that kind of sucks...
+
+* Do a translation from a target group to a general EC group
+  That seems like it could do some interesting things.  Maybe even in
+  the crypto world?  Probably in the crypto-systems world.
+
 * Language tranalation:
   Translated Java bytecode (or DEX) into JavaScript.  Why?  More
   efficient, cross platform execution in a browser.  No more Java
