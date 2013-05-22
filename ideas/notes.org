@@ -3,6 +3,16 @@
 #+EMAIL: mzlee@cs.utexas.edu
 #+STARTUP: showall
 
+* Detecting click fraud
+  Something like anon-pass to generate tokens and submit.
+  You look like a new random person?
+
+  Look at detecting click-fraud using crypto?
+
+-----
+  Finger printing users to look for shared credentials and detecting
+  proxies.
+
 * Use DUNE for something fun
   Seems like it could be fun.
 
