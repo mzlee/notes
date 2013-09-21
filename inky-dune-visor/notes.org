@@ -1,0 +1,18 @@
+#+TITLE: inky-dune-visor
+#+AUTHOR: Michael Z. Lee
+#+EMAIL: mzlee@cs.utexas.edu
+
+#+STARTUP: showall
+
+* Direction One
+
+** Don't trust your operating system
+   
+
+
+** Don't trust the VMM underneath it either
+
+* Direction Two
+
+** Nested or not, it's kind of the same
+   
