@@ -16,3 +16,7 @@
 
 ** Nested or not, it's kind of the same
    
+How does this work?  We have an application that can handle its own
+page table and pagefaults.  We have a guest OS which handles a lot of
+system calls we don't care about.  We have the hypervisor which
+allocates the memory we need for the inky-dune process.
