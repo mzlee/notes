@@ -1,0 +1,29 @@
+#+TITLE: quiet-mail
+#+AUTHOR: Michael Z. Lee
+#+EMAIL: mzlee@cs.utexas.edu
+
+#+STARTUP: showall
+
+* How do you make an untraceable email?
+  + What do we want to prevent?
+    Leaking the data and the metadata.
+  + How?
+    # Encrypt the message with a random symmetric key.
+    # Encrypt the symmetric key with a public key.
+    # 
+
+* What does this look like?
+  + Alice and Bob have private keys.  The public key rotates.
+  + 
+  + Exchange the address out of band
+
+* Email server accessible over a Tor hidden service.
+
+
+* Service keeps a directory of current addresses.
+
+* As a service, what will I see?
+  + An IP address
+  + A timestamp
+  + A blob of data
+  + When and how the blob of data moves
