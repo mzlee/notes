@@ -1,5 +1,12 @@
-#+TITLE: dcac
-#+STARTUP: showall
+---
+layout: idea
+title: "DeCentralized Access Control"
+description: "A decentralized access control scheme"
+category: "OS"
+tags: ["access control", "systems hacking"]
+author: "Michael Z. Lee"
+email: "mzlee@cs.utexas.edu"
+---
 
 * 01/23/2012
   - Write a malicious binary
@@ -19,6 +26,6 @@
     - File and directory sharing
       - Dropbox?  Would that even work?
     - Server application, resources for many users
-      - DokoWiki
+      - DokuWiki
 * 01/30/2012
   - 

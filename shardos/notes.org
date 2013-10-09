@@ -1,5 +1,12 @@
-#+TITLE: ShardOS
-#+STARTUP: showall
+---
+layout: idea
+title: "ShardOS"
+description: "Sharding OS services on demand"
+category: "OS"
+tags: ["distributed systems", "shared memory"]
+author: "Michael Z. Lee"
+email: "mzlee@cs.utexas.edu"
+---
 
 # COMET is cool.  Actually, that's basically the idea in my head.  But
 # do it without using dalvik.  Do it bare metal in the Linux kernel.  Is

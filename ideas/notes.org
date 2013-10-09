@@ -1,9 +1,16 @@
-#+TITLE: Ideas
-#+AUTHOR: Michael Z. Lee
-#+EMAIL: mzlee@cs.utexas.edu
-#+STARTUP: showall
+---
+layout: idea
+title: "Ideas"
+description: "Assorted ideas"
+category: "ideas"
+tags: ["ideas"]
+author: "Michael Z. Lee"
+email: "mzlee@cs.utexas.edu"
+---
 
-* Anti-ROP
+Anti-ROP
+===
+
   Is it possible to cut off code disclosure?  Some kind of system that
   prevents data from being executed and code from being read except by
   the execution.  And if so, does this help anything?
@@ -11,26 +18,36 @@
   An extra bit in the page tables that marks pages data-read and
   code-read.  What do byte disclosures look like?
 
-* Zero Knowledge proof of correct execution
+Zero Knowledge proof of correct execution
+===
+
   A program could be decomposed and the operations could form a zero
   knowledge proof of correct execution without leaking the input
   data.  We would probably only want to target execution (i.e. PALs)
   because syscalls are hard.
 
-* Detecting click fraud
+Detecting click fraud
+===
+
   Something like anon-pass to generate tokens and submit.
   You look like a new random person?
 
   Look at detecting click-fraud using crypto?  Basically looks for
   someone who has submitted the same token too many times.
 
-* Use DUNE for something fun
+Use DUNE for something fun
+===
+
   Seems like it could be fun.
 
-* Look at cryptographic accumulators
+Look at cryptographic accumulators
+===
+
   Why do they take 40KB, that kind of sucks...Can we cut that in half?
 
-* Do a translation from a target group to a general EC group
+Do a translation from a target group to a general EC group
+===
+
   That seems like it could do some interesting things.  Maybe even in
   the crypto world?  Probably in the crypto-systems world.
 
@@ -38,7 +55,9 @@
   computation of a bijection from one prime-order group to another.
   What does that entail and how could you possibly approach it?
 
-* Language tranalation:
+Language tranalation:
+===
+
   Translated Java bytecode (or DEX) into JavaScript.  Why?  More
   efficient, cross platform execution in a browser.  No more Java
   applet, just run in in JS.
@@ -47,7 +66,11 @@
   - Could it be possible to run Android apps in a browser? That'd be
     cool.
 
-* JavaScript record and replay
+  Whoa, this kind of showed up as a paper in ASPLOS 2014...
+
+JavaScript record and replay
+===
+
   Is there some kind of computational offload that can happen here?
   Basically, a "beefy" server plays the JavaScript and records the
   highlights.  This is translated to something that can be replayed
@@ -58,8 +81,12 @@
   - How do you handle side effects?
   - Can you offload your own home desktop for this task?
 
-* ShardOS (for Sharded Operating System or Shared Application Resource and Data Operating System)
-  or LANOS (for LAN Operating System or Local Area Network Operating System)
+ShardOS
+===
+(for Sharded Operating System or Shared Application Resource
+and Data Operating System) or LANOS (for LAN Operating System or Local
+Area Network Operating System)
+
   - Homes are connected.  There has been a shift in computing where
     more and more systems are online or connected over a
     local-area-network.  However, resources are still split.
@@ -102,7 +129,9 @@
       need for a load balancer, the master thread/process handles that
       automatically by dispatching to the process pool.
 
-* Process Fork and Join
+Process Fork and Join
+===
+
   Serializing a process to pause and restart has been shown to be
   possible.  The necessary services will need to be copied and will
   need to be established on top of an interface that is fairly
@@ -122,7 +151,9 @@
   loop, synchronizing any transient state, and reconciling the
   persistent changes to merge a previously forked program.
 
-** Implemenation
+Implemenation
+---
+
    I should be able to checkpoint a program from a kernel module or
    virtual machine.  Furthermore, implementing an in memory filesystem
    seems perfectly reasonable as just buffers in a flat namespace.
@@ -135,7 +166,9 @@
    problem as two different programs would be reading from different
    things.  This could all just be discarded upon serialization.
 
-** Motivation
+Motivation
+---
+
    Being able to pause and migrate a program is a powerful thing.
    Making it more platform agnostic is also useful because then a
    program can follow you around.  However, the ability to branch a
@@ -147,22 +180,30 @@
 
    This would probably require program specific merge tools...
 
-* Attribute Based Encryption for ???
+Attribute Based Encryption for ???
+===
+
   It's an interesting idea for a crypto system, now how do we apply
   it?
 
-* Secure Signing and Update of Attested Code
+Secure Signing and Update of Attested Code
+===
+
   We would like to be able to update attested code from a remote
   location with some reasonable security guarantee.  How thin can we
   stretch the adverary model?  
 
-* Stackable Virtual Machines
+Stackable Virtual Machines
+===
+
   Now that cloud visor exists, is there anything else that's
   interesting about stacking virtual machines?  Are there additional
   security guarantees one might be able to provide in the hypervisor
   layer?
 
-* The Four Rings to Secure Them All
+The Four Rings to Secure Them All
+===
+
   Your computer has four protection rings, but we're only commonly
   familiar with two of the rings: ring 0 and ring 3.  With the advent
   of new hardware and new technology, we have seen additional use and
@@ -208,7 +249,9 @@
   + The actual user application
   + Shouldn't need modification
 
-** Constraining the Interfaces
+Constraining the Interfaces
+---
+
    A goal is to limit the number of transfer points and function calls
    needed.  Each layer below can copy the necessary entry points into
    the upper layer's memory space.  In some ways, this is just taking
@@ -252,7 +295,9 @@
    interface can be a per-process instance (as some of it already is),
    and the drivers will sit aside almost like a micro kernel construction.
 
-* The Use, Misuse, and Abuse of Trusted Computing
+The Use, Misuse, and Abuse of Trusted Computing
+===
+
   We would like to create a comprehensive view of the scope of
   trusted computing technology and how and where it is used in the
   real world.  To this end, we will collect different open and close
@@ -263,7 +308,9 @@
   software TPM to see if it is possible to break or abuse people's
   assumption of trusted computing.
 
-* JavaScript Measurement Study
+JavaScript Measurement Study
+===
+
   What happens when you break up a browser's origin policy and only
   allow code from a given origin to access its own objects?  How much
   stuff does this break?
@@ -273,12 +320,16 @@
 
   Just how many websites import other people's code?  How big is this
   trusted computing base?
-** Something bigger
+
+Something bigger
+---
    More than just a measurement study, can I make an interesting
    browser that splits the same-origin-policy in JavaScript.  Has this
    been done (AdSentry) or done well enough?
 
-* Three Party Computation
+Three Party Computation
+===
+
   How do you do three party computation when there is mutual distrust
   between all of the parties?  Is there some way to prove that this is
   or isn't possible (not quite on the level of FLP or the CAP
@@ -297,11 +348,15 @@
       alright to not hmac the user request so long as the server
       response is hmac'd.
 
-* Seccomp-BPF breaking
+Seccomp-BPF breaking
+===
+
   BFP: (BSD Packet Filtering)
   http://blog.cr0.org/2012/09/introducing-chromes-next-generation.html
 
-* Address Space Randomization
+Address Space Randomization
+===
+
   Is it possible to write an operating system extension and gcc
   extension to make it possible to randomize program text and data on
   a page level?
@@ -312,3 +367,5 @@
   How bad is this from a performance perspective?
 
   Does this fix anything if the ROP also uses this address translation?
+
+  Turns out the answers are: yes, yes, no.

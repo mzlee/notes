@@ -1,5 +1,12 @@
-#+TITLE: Notes about Anon-Sub (Anonymous Subscriptions)
-#+STARTUP: showall
+---
+layout: idea
+title: "Anon-Pass"
+description: "How to build an anonymous subscription service"
+category: "Crypto"
+tags: ["anonymity", "ZNPoK"]
+author: "Michael Z. Lee"
+email: "mzlee@cs.utexas.edu"
+---
 
 * Tasks
   + Reimplement in C

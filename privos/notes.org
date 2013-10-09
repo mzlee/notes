@@ -1,7 +1,16 @@
-#-*- mode: org -*-
-#+STARTUP: showall
+---
+layout: idea
+title: "Lacuna"
+description: "Private mode for your operating system"
+category: "OS"
+tags: ["privacy", "systems hacking"]
+author: "Michael Z. Lee"
+email: "mzlee@cs.utexas.edu"
+---
 
-* File system considerations
+File system considerations
+---
+
   We would like to be able to share data.  One way would be attach a
   drive that can be used to de-classify.  Not terrible as a first cut,
   but nicer things should exist.
