@@ -1,5 +1,9 @@
-#+TITLE: Larrabee Benchmarking Notes
-#+AUTHOR: Michael Lee
+---
+title: Larrabee Benchmarking Notes
+author: Michael Z. Lee
+email: mzlee@cs.utexas.edu
+---
+
 * Interrupts
 ** Message Signalled Interrupts
 ** Host to LRB
