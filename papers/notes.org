@@ -16,3 +16,7 @@
   + Efficient Garbling: http://www.cs.ucdavis.edu/~rogaway/papers/eff.pdf
   + Circuit Structures: http://www.cs.virginia.edu/~evans/pubs/oakland2013/circuit-structures.pdf
   + Lucky Thirteen: http://www.isg.rhul.ac.uk/tls/TLStiming.pdf
+  + Entropics: http://cseweb.ucsd.edu/users/swanson/papers/Oakland2013EarlyEntropy.pdf
+
+* Other
+  + Click Fraud: http://static.usenix.org/event/sec07/tech/full_papers/juels/juels_html/clickfraud.html
