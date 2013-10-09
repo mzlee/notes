@@ -1,8 +1,12 @@
-#+TITLE: Usenix Security 12
-#+AUTHOR: Michael Z. Lee
-#+EMAIL: mzlee@cs.utexas.edu
-
-#+STARTUP: showall
+---
+layout: idea
+title: "USENIX 2012"
+description: "A reading list"
+category: "Reading"
+tags: ["usesec"]
+author: "Michael Z. Lee"
+email: "mzlee@cs.utexas.edu"
+---
 
 https://www.usenix.org/conference/usenixsecurity12/evaluation-google-chrome-extension-security-architecture
 https://www.usenix.org/conference/usenixsecurity12/tardis-time-and-remanence-decay-sram-implement-secure-protocols-embedded
