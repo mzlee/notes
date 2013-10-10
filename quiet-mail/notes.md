@@ -1,58 +1,52 @@
 ---
 layout: idea
-title: "Quiet Mail"
-description: "A private email-like service"
-category: "Crypto"
-tags: ["anonymity", "privacy", "ZKPoK"]
-author: "Michael Z. Lee"
-email: "mzlee@cs.utexas.edu"
+title: Quiet Mail
+description: A private email-like service
+category: Crypto
+tags: [anonymity, privacy, ZKPoK]
+author: Michael Z. Lee
 ---
 
-How do you make an untraceable email?
-=====================================
+# How do you make an untraceable email?
 
-What do we want to prevent?
----------------------------
+## What do we want to prevent?
 
 Leaking the data and the metadata.  The data is easy, symmetric key
 encryption.  The metadata is harder:
 
-# Timestamp:
+1. Timestamp:
   can't do anything about this
 
-# Originating IP:
+2. Originating IP:
   can't do anything about this
 
-# The sending address:
+3. The sending address:
   sure, just don't include it.  How does the sender respond to the
   message?  A rendezvous point that is established by in the initial
   message.
   
-# The receiving address
+4. The receiving address
   This would be the killer app.
 
-   # Encrypt the message with a random symmetric key.
+   1. Encrypt the message with a random symmetric key.
 
-   # Encrypt the symmetric key with a public key.
+   2. Encrypt the symmetric key with a public key.
 
-What does this look like?
-=========================
+# What does this look like?
+
 No idea, but here are some potential pieces...
 
-Email server accessible over a Tor hidden service.
----
+## Email server accessible over a Tor hidden service.
 
 This ensures people are using Tor.  I guess instead this could be a
 normal service and just let people be linked by IP.  Leave it up to
 them to figure it out.
 
-Service keeps a directory of current addresses.
----
+## Service keeps a directory of current addresses.
 
 Should the server be the directory service?
 
-As a service, what will I see?
-===
+# As a service, what will I see?
 
 * An IP address
 * A timestamp
