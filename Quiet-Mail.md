@@ -1,11 +1,11 @@
 ---
 layout: idea
-title: "Quiet Mail"
-description: "A private email-like service"
-category: "Crypto"
-tags: ["anonymity", "privacy", "ZKPoK"]
-author: "Michael Z. Lee"
-email: "mzlee@cs.utexas.edu"
+title: Quiet Mail
+description: A private email-like service
+category: Crypto
+tags: [anonymity, privacy, ZKPoK]
+author: Michael Z. Lee
+email: mzlee@cs.utexas.edu
 ---
 
 How do you make an untraceable email?
