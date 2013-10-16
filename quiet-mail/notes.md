@@ -21,14 +21,21 @@ The metadata is harder:
 2. Originating IP: can't do anything about this
 
 3. The sending address: sure, just don't include it.
-How does the sender respond to the message?
-A rendezvous point that is established by in the initial message.
+  How does the sender respond to the message?
+  A rendezvous point that is established by in the initial message.
   
 4. The receiving address: this would be the killer app.
    1. Encrypt the message with a random symmetric key.
    2. Encrypt the symmetric key with a public key.
 
 # What does this look like?
+
+Sender authentication:
+
+1. A signature is included in the encrypted message.
+  Basically, encrypt and MAC.
+
+2. 
 
 No idea, but here are some potential pieces...
 
