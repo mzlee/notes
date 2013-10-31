@@ -30,6 +30,21 @@ The metadata is harder:
 
 # What does this look like?
 
+Hiding the sender:
+
+1. k-anonymity -- when a user sends a message, it is automatically
+   mixed with k - 1 other users.
+   1. Collect k messages from different public keys, mix the messages:
+      1 real message, k-1 empty messages.
+   2. Broadcast the message to k people.
+   
+2. What if my sender is not among the receivers (i.e. not among the
+   k-1 other clients?)
+   1. Messages are available to every user.
+   2. What if we add a client requirement - check your messages every day?
+      1. Change users' message identifier everyday.
+	  2. How do you set the identifier?
+
 Sender authentication:
 
 1. A signature is included in the encrypted message.
