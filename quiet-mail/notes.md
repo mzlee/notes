@@ -8,6 +8,22 @@ author: Michael Z. Lee
 email: mzlee@cs.utexas.edu
 ---
 
+# Goal
+
+We want to name someone without disclosing them publicly.  How?
+
+1. How does the sender know how to "address" the receiver?
+
+   A shared secret?  
+
+2. How does the receiver accept the "email"?
+
+   Random authentication?  Only download once?
+
+3. How does the receiver know when there is a new "email"?
+
+   An accumulator?  A randomly generated name?
+
 # How do you make an untraceable email?
 
 ## What is private?
