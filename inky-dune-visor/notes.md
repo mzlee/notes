@@ -9,15 +9,16 @@ author: "Michael Z. Lee"
 email: "mzlee@cs.utexas.edu"
 ---
 
-Direction One: 
+Tasks
 ===
-Don't trust your operating system, don't trust the VMM underneath it either
 
-Direction Two:
-===
-Nested or not, it's kind of the same
-   
-How does this work?  We have an application that can handle its own
-page table and pagefaults.  We have a guest OS which handles a lot of
-system calls we don't care about.  We have the hypervisor which
-allocates the memory we need for the inky-dune process.
+1. How does the `vmcs` compare between Dune and KVM?
+   The version is the same.  I don't know about the rest of it yet.
+   Let's print out the entire `vmcs` to check.
+
+2. Can we just allocate and attach a new VCPU to the queue of
+   schedulable VCPU's?
+
+3. How does `vmx_launch` (Dune) compare to `vmx_vcpu_run` (KVM)?
+
+4. 
