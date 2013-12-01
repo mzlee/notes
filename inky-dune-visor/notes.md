@@ -16,9 +16,9 @@ Tasks
    The version is the same.  I don't know about the rest of it yet.
    Let's print out the entire `vmcs` to check.
 
-2. Can we just allocate and attach a new VCPU to the queue of
+2. Can we just allocate and attach a new VCPU to some queue of
    schedulable VCPU's?
 
 3. How does `vmx_launch` (Dune) compare to `vmx_vcpu_run` (KVM)?
 
-4. 
+4. How do the `vcpu`'s differ?
