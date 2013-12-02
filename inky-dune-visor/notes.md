@@ -14,7 +14,7 @@ Tasks
 
 1. How does the `vmcs` compare between Dune and KVM?
    The version is the same.  I don't know about the rest of it yet.
-   Let's print out the entire `vmcs` to check.
+   Let's print out the entire `vmcs` to check out the differences.
 
 2. Can we just allocate and attach a new VCPU to some queue of
    schedulable VCPU's?
