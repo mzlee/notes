@@ -9,6 +9,13 @@ author: "Michael Z. Lee"
 email: "mzlee@cs.utexas.edu"
 ---
 
+More Directions
+===
+
+Shared memory syscall polling.
+Get `open`, fs syscalls working first.
+
+
 Tasks
 ===
 
