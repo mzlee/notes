@@ -191,7 +191,7 @@ Secure Signing and Update of Attested Code
 
   We would like to be able to update attested code from a remote
   location with some reasonable security guarantee.  How thin can we
-  stretch the adverary model?  
+  stretch the adverary model?
 
 Stackable Virtual Machines
 ===
@@ -231,7 +231,7 @@ The Four Rings to Secure Them All
     - Boot loader
     - Paging
     - Scheduling
-  
+
   Driver Interface:
   + Deals with trying to standardize the different pieces of hardware
     into a single, conherent interface
@@ -369,3 +369,8 @@ Address Space Randomization
   Does this fix anything if the ROP also uses this address translation?
 
   Turns out the answers are: yes, yes, no.
+
+Dune Kernel Modules
+===
+
+  What about putting kernel modules into Dune?
