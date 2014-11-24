@@ -1,7 +1,15 @@
 ---
 layout: idea
 title: "A query interface for opaque datatypes"
-description: "Applications store data in many different formats, including some proprietary data formats.  This makes it difficult for a user to understand what data an application has as well as difficult to understand the data being generated.  We propose to use static program analysis, binary analysis, dynamic runtime analysis, and/or reverse engineering to extract the program interfaces inherently present and provides users the ability to analyze and query the data."
+description: "Applications store data in many different formats,
+              including some proprietary data formats.  This makes it
+              difficult for a user to understand what data an
+              application has as well as difficult to understand the
+              data being generated.  We propose to use static program
+              analysis, binary analysis, dynamic runtime analysis,
+              and/or reverse engineering to extract the program
+              interfaces inherently present and provides users the
+              ability to analyze and query the data."
 category: "Program Analysis, "
 tags: ["Program Analysis"]
 author: "Michael Z. Lee"
